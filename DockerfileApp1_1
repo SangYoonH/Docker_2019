@@ -1,0 +1,15 @@
+FROM gradle:jdk10 as builder
+MAINTAINER sypete
+COPY --chown=gradle:gradle ./apptest01_green /home/gradle/src
+
+WORKDIR /home/gradle/src
+RUN gradle build
+
+FROM openjdk:10-jre-slim
+EXPOSE 8180
+COPY --from=builder /home/gradle/src/build/libs/gs-spring-boot-docker-0.1.0.jar  /app/
+WORKDIR /app
+
+ENTRYPOINT exec java $JAVA_OPTS -jar gs-spring-boot-docker-0.1.0.jar
+# For Spring-Boot project, use the entrypoint below to reduce Tomcat startup time.
+#ENTRYPOINT exec java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar apptest.jar

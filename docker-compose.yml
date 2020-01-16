@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  nginx:
+    container_name: nginx
+    build:
+       context: .
+       dockerfile: ./DockerfileNginx
+       args:
+            conf: nginx/conf
+    ports:
+       - "80:80"
+    networks:
+       - frontend
+    depends_on:
+       - apptest01_blue
+       - apptest_blue
+    volumes:
+       - ./logs/nginx/:/etc/nginx/log
+
+  apptest01_blue:
+    container_name: apptest01_blue
+    environment:
+      - JAVA_OPTS=-Dspring.profiles.active=file-logging
+    build:
+        context: .
+        dockerfile: ./DockerfileApp1
+
+    volumes:
+      - ./logs/spring-boot/:/usr/log/
+    networks:
+       - frontend
+
+  apptest_blue:
+    container_name: apptest_blue
+    environment:
+      - JAVA_OPTS=-Dspring.profiles.active=file-logging
+    build:
+        context: .
+        dockerfile: ./DockerfileApp2
+
+    volumes:
+      - ./logs/spring-boot2/:/usr/log/
+    networks:
+       - frontend
+    
+networks:
+  frontend:
+    driver: bridge

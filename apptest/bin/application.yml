@@ -1,0 +1,11 @@
+server: 
+  port: 8180
+  
+management:
+  security:
+    enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+ 

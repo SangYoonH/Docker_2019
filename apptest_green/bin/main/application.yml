@@ -1,0 +1,23 @@
+server: 
+  port: 8180
+  
+management:
+  security:
+     enabled: false
+  endpoint:
+    health:
+     show-details: "ALWAYS"
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: "*"
+debug: true
+
+logging:
+  level:
+    root : DEBUG
+    org.springframework.web: DEBUG
+    org.hibernate: DEBUG
+  path: /usr/log/
+     

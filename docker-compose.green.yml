@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  apptest01_green:
+    environment:
+      - JAVA_OPTS=-Dspring.profiles.active=file-logging
+    build:
+        context: .
+        dockerfile: ./DockerfileApp1_1
+
+    volumes:
+      - ./logs/spring-boot/:/usr/log/
+    networks:
+      - apps_frontend
+
+  apptest_green:
+    environment:
+      - JAVA_OPTS=-Dspring.profiles.active=file-logging
+    build:
+        context: .
+        dockerfile: ./DockerfileApp2_1
+
+    volumes:
+      - ./logs/spring-boot2/:/usr/log/
+    networks:
+      - apps_frontend
+
+networks:
+  apps_frontend:
+    external: true
+    
+ 
